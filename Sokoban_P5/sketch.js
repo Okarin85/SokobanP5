@@ -97,6 +97,14 @@ function keyPressed() {
       for(var i = 0; i < boite.length; i++){
           var boxecollide = boite[i].y *10 + boite[i].x;
           if(blocCollide === boxecollide){
+            for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide + 1 === ndboxecollide){
+                okarin.x--;
+                boite[i].x--;
+                break;
+              }
+            }
             if(carte[boxecollide + 1] === 1 || carte[boxecollide + 1] === 0){
               okarin.x--;
               break;
@@ -126,6 +134,16 @@ function keyPressed() {
       for(var i = 0; i < boite.length; i++){
           var boxecollide = boite[i].y *10 + boite[i].x;
           if(blocCollide === boxecollide){
+            
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide - 1 === ndboxecollide){
+                okarin.x++;
+                boite[i].x++;
+                break;
+              }
+            }
+            
             if(carte[boxecollide - 1] === 1 || carte[boxecollide - 1] === 0){
               okarin.x++;
               break;
@@ -152,6 +170,16 @@ function keyPressed() {
       for(var i = 0; i < boite.length; i++){
           var boxecollide = boite[i].y * 10 + boite[i].x;
           if(blocCollide === boxecollide){
+
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide - 10 === ndboxecollide){
+                okarin.y++;
+                boite[i].y++;
+                break;
+              }
+            }
+
             if(carte[boxecollide - 10] === 1 || carte[boxecollide - 10] === 0){
               okarin.y++;
               break;
@@ -178,6 +206,16 @@ function keyPressed() {
       for(var i = 0; i < boite.length; i++){
           var boxecollide = boite[i].y * 10 + boite[i].x;
           if(blocCollide === boxecollide){
+
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide + 10 === ndboxecollide){
+                okarin.y--;
+                boite[i].y--;
+                break;
+              }
+            }
+
             if(carte[boxecollide + 10] === 1 || carte[boxecollide + 10] === 0){
               okarin.y--;
               break;
