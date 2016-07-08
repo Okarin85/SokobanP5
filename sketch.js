@@ -14,6 +14,10 @@ var carte = [
       			 0,1,2,2,2,4,2,2,1,0,
       			 0,0,0,0,0,0,0,0,0,0
       			];
+
+function preload() {
+  mySound = loadSound('tuturu.mp3');
+}
       			
 var grid = function(){
 			
@@ -261,7 +265,8 @@ var checkIfWon = function(){
     }
     if(won === 7){
       if(winmessage){
-      window.alert("Tu as gagné !")
+      window.alert("Tu as gagné !");
+      mySound.play();
       winmessage = false;
     }
   }
@@ -275,6 +280,7 @@ function setup() {
   var y = (windowHeight - height) / 2;
   cnv.position(x, y);
   background(55, 55, 55);
+  mySound.setVolume(0.1);
 }
 
 function draw() {
