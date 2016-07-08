@@ -265,8 +265,8 @@ var checkIfWon = function(){
     }
     if(won === 7){
       if(winmessage){
-      window.alert("Tu as gagné !");
       mySound.play();
+      window.alert("Tu as gagné !");
       winmessage = false;
     }
   }
