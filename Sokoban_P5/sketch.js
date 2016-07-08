@@ -52,6 +52,7 @@ var gameboard = new grid();
 var boxes = function(x, y){
   this.x = x;
   this.y = y;
+  this.victory = 0;
 
   this.show = function(){
     fill(0, 0, 0);
@@ -239,6 +240,30 @@ function keyPressed() {
   
 }
 
+var victory = function(){
+  for(i = 0; i < boite.length; i++){
+    var boxecollide = boite[i].y * 10 + boite[i].x;
+    if(carte[boxecollide] === 4){
+      boite[i].victory = 1;
+    } 
+    else{
+      boite[i].victory = 0;
+    }
+  }
+}
+
+var checkIfWon = function(){
+  var won = 0;
+  for(i = 0; i < boite.length; i++){
+    if(boite[i].victory === 1){
+      won ++;
+    }
+    if(won === 7){
+      window.alert("Tu as gagné !")
+    }
+  }
+}
+
 
 function setup() {
   var cnv = createCanvas(400, 400);
@@ -249,8 +274,10 @@ function setup() {
 }
 
 function draw() {
+  checkIfWon();
   gameboard.show();
   okarin.show();
+  victory();
 
   for(i = 0; i < boite.length; i++){
     boite[i].show();
