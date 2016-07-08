@@ -1,9 +1,13 @@
 var squareScale = 40;
 var blocCollide = 0;
+
 var okarin_front;
 var okarin_back;
 var okarin_left;
 var okarin_right;
+
+var microwaves;
+var banana;
 
 var carte = [
       			 0,0,0,0,0,0,0,0,0,0,
@@ -24,6 +28,8 @@ function preload() {
   okarin_back = loadImage("Okarin_Back_1.png");
   okarin_left = loadImage("Okarin_Left_1.png");
   okarin_right = loadImage("Okarin_Right_1.png");
+  microwaves = loadImage("Micro_onde.png");
+  banana = loadImage("Banane.png");
 }
       			
 var grid = function(){
@@ -45,8 +51,7 @@ var grid = function(){
               rect(x * squareScale, y * squareScale, squareScale, squareScale);
             }
             else if(carte[bloc] === 4){
-              fill(0, 127, 255);
-              rect(x * squareScale, y * squareScale, squareScale, squareScale);
+              image(microwaves, x * squareScale + 1, y * squareScale + 1, squareScale -1, squareScale - 1);
             }
             else{
               fill(255, 255, 255);
@@ -66,14 +71,9 @@ var boxes = function(x, y){
   this.victory = 0;
 
   this.show = function(){
-    fill(0, 0, 0);
-    ellipse((this.x * squareScale) + (squareScale / 2),(this.y * squareScale) + (squareScale / 2), squareScale / 2, squareScale / 2);
+    banana
+    image(banana, this.x * squareScale + 10, this.y * squareScale + 10, squareScale / 2, squareScale / 2);
   }
-
-  this.move = function(dir){
-
-  }
-
 
 }
 var boite = [
