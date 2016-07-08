@@ -252,6 +252,7 @@ var victory = function(){
   }
 }
 
+var winmessage = true;
 var checkIfWon = function(){
   var won = 0;
   for(i = 0; i < boite.length; i++){
@@ -259,9 +260,12 @@ var checkIfWon = function(){
       won ++;
     }
     if(won === 7){
+      if(winmessage){
       window.alert("Tu as gagné !")
+      winmessage = false;
     }
   }
+}
 }
 
 
