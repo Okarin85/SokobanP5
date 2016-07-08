@@ -1,6 +1,9 @@
 var squareScale = 40;
 var blocCollide = 0;
-
+var okarin_front;
+var okarin_back;
+var okarin_left;
+var okarin_right;
 
 var carte = [
       			 0,0,0,0,0,0,0,0,0,0,
@@ -17,6 +20,10 @@ var carte = [
 
 function preload() {
   mySound = loadSound('tuturu.mp3');
+  okarin_front = loadImage("Okarin_Down_1.png");
+  okarin_back = loadImage("Okarin_Back_1.png");
+  okarin_left = loadImage("Okarin_Left_1.png");
+  okarin_right = loadImage("Okarin_Right_1.png");
 }
       			
 var grid = function(){
@@ -83,10 +90,27 @@ var boite = [
 var player = function(){
   this.x = 3;
   this.y = 2;
+  this.direction = 0;
   
   this.show = function(){
-    fill(0, 255, 0);
-      rect(this.x * squareScale, this.y * squareScale, squareScale, squareScale );
+    switch(this.direction){
+      case 0:
+        image(okarin_right, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+
+      case 1:
+        image(okarin_left, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+
+      case 2:
+        image(okarin_back, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+
+      case 3:
+        image(okarin_front, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+    }
+    
   }
   
 }
@@ -96,6 +120,7 @@ var okarin = new player();
 function keyPressed() {
   switch(keyCode){
     case RIGHT_ARROW:
+      okarin.direction = 0;
       var collide = okarin.x + 1;
       blocCollide = okarin.y * 10 + collide;
       
@@ -133,6 +158,7 @@ function keyPressed() {
   
 
     case LEFT_ARROW:
+      okarin.direction = 1;
       var collide = okarin.x - 1;
       blocCollide = okarin.y * 10 + collide;
 
@@ -170,6 +196,7 @@ function keyPressed() {
 
 
     case UP_ARROW:
+      okarin.direction = 2;
       blocCollide = (okarin.y - 1) * 10 + okarin.x;
 
       for(var i = 0; i < boite.length; i++){
@@ -206,6 +233,7 @@ function keyPressed() {
 
 
     case DOWN_ARROW:
+      okarin.direction = 3;
       blocCollide = okarin.y * 10 + okarin.x + 10;
 
       for(var i = 0; i < boite.length; i++){
