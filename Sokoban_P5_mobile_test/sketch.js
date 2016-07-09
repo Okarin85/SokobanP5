@@ -1,52 +1,64 @@
 var squareScale = 40;
 var blocCollide = 0;
 
-      /*
-      Les boîtes ne doivent pas être "hardcodé" dans la carte
-      parce qu'elle vont bouger comme le player.
-      */
+var okarin_front;
+var okarin_back;
+var okarin_left;
+var okarin_right;
 
-      var carte = [
+var microwaves;
+var banana;
+
+var carte = [
       			 0,0,0,0,0,0,0,0,0,0,
       			 0,1,1,1,2,2,2,1,1,0,
-      			 0,1,2,2,3,2,2,1,1,0,
-      		   0,1,1,1,2,3,4,1,1,0,
-      			 0,1,4,1,1,3,2,1,1,0,
+      			 0,1,4,2,2,2,2,1,1,0,
+      		   0,1,1,1,2,2,4,1,1,0,
+      			 0,1,4,1,1,2,2,1,1,0,
       			 0,1,2,1,2,4,2,1,1,0,
-      			 0,1,3,1,2,2,2,1,1,0,
-      			 0,1,2,2,3,3,3,4,1,0,
+      			 0,1,2,1,2,2,2,1,1,0,
+      			 0,1,2,2,4,2,2,4,1,0,
       			 0,1,2,2,2,4,2,2,1,0,
       			 0,0,0,0,0,0,0,0,0,0
       			];
+
+function preload() {
+  mySound = loadSound('tuturu.mp3');
+  okarin_front = loadImage("Okarin_Down_1.png");
+  okarin_back = loadImage("Okarin_Back_1.png");
+  okarin_left = loadImage("Okarin_Left_1.png");
+  okarin_right = loadImage("Okarin_Right_1.png");
+  microwaves = loadImage("Micro_onde.png");
+  banana = loadImage("Banane.png");
+}
       			
 var grid = function(){
 			
       this.show = function(){
-        for(var i = 0; i < 10; i++){
-      	for(var j = 0; j < 10; j++){
-      		var bloc = j * 10 + i;
-      		if(carte[bloc] === 0){
-      		  fill(0, 0, 0);
-      			rect(i * squareScale, j * squareScale, squareScale, squareScale);
-      		}
-          else if(carte[bloc] === 1){
-            fill(127, 127, 127);
-      			rect(i * squareScale, j * squareScale, squareScale, squareScale);
+        for(var x = 0; x < 10; x++){
+          for(var y = 0; y < 10; y++){
+            var bloc = y * 10 + x;
+            if(carte[bloc] === 0){
+              fill(0, 0, 0);
+              rect(x * squareScale, y * squareScale, squareScale, squareScale);
+            }
+            else if(carte[bloc] === 1){
+              fill(127, 127, 127);
+              rect(x * squareScale, y * squareScale, squareScale, squareScale);
+            }
+            else if(carte[bloc] === 3){
+              fill(67, 67, 67);
+              rect(x * squareScale, y * squareScale, squareScale, squareScale);
+            }
+            else if(carte[bloc] === 4){
+              image(microwaves, x * squareScale + 1, y * squareScale + 1, squareScale -1, squareScale - 1);
+            }
+            else{
+              fill(255, 255, 255);
+              rect(x * squareScale, y * squareScale, squareScale, squareScale);
+            }
           }
-          //else if(carte[bloc] === 3){
-            //fill(67, 67, 67);
-      			//rect(i * squareScale, j * squareScale, squareScale, squareScale);
-          //}
-          //else if(carte[bloc] === 4){
-            //fill(187, 187, 187);
-      			//rect(i * squareScale, j * squareScale, squareScale, squareScale);
-          //}
-      		else{
-      			fill(255, 255, 255);
-      			rect(i * squareScale, j * squareScale, squareScale, squareScale);
-      		}
-      	}
-      }
+        } 
       }
 
 }
@@ -71,16 +83,41 @@ var touchMove = function(){
 var down_arrow = function(){
     this.move = function(){
 
-    blocCollide = okarin.y * 10 + okarin.x + 10;
-    if(carte[blocCollide] === 0){
-      okarin.y = okarin.y;
-    }
-    else if(carte[blocCollide] === 1){
-      okarin.x = okarin.x;
-    }
-    else{
-    okarin.y++;
-    }
+      okarin.direction = 3;
+      blocCollide = okarin.y * 10 + okarin.x + 10;
+
+      for(var i = 0; i < boite.length; i++){
+          var boxecollide = boite[i].y * 10 + boite[i].x;
+          if(blocCollide === boxecollide){
+
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y * 10 + boite[j].x;
+              if(boxecollide + 10 === ndboxecollide){
+                okarin.y--;
+                boite[i].y--;
+                break;
+              }
+            }
+
+            if(carte[boxecollide + 10] === 1 || carte[boxecollide + 10] === 0){
+              okarin.y--;
+              break;
+            }
+          boite[i].y++;
+          }
+      }
+
+      if(carte[blocCollide] === 0){
+              
+      }
+      else if(carte[blocCollide] === 1){
+                
+      }
+      else{
+      okarin.y++;
+      }
+      
+      
   }
     this.show = function(){
     fill(0, 0, 255);
@@ -91,18 +128,40 @@ var controller_down = new down_arrow();
 
 var up_arrow = function(){
   this.move = function(){
-    
-    blocCollide = (okarin.y - 1) * 10 + okarin.x;
-    
-    if(carte[blocCollide] === 0){
-      okarin.y = okarin.y;
-    }
-    else if(carte[blocCollide] === 1){
-      okarin.y = okarin.y;
-    }
-    else{
-    okarin.y--;
-  }
+      okarin.direction = 2;
+      blocCollide = (okarin.y - 1) * 10 + okarin.x;
+
+      for(var i = 0; i < boite.length; i++){
+          var boxecollide = boite[i].y * 10 + boite[i].x;
+          if(blocCollide === boxecollide){
+
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide - 10 === ndboxecollide){
+                okarin.y++;
+                boite[i].y++;
+                break;
+              }
+            }
+
+            if(carte[boxecollide - 10] === 1 || carte[boxecollide - 10] === 0){
+              okarin.y++;
+              break;
+            }
+          boite[i].y--;
+          }
+      }
+      
+      if(carte[blocCollide] === 0){
+        
+      }
+      else if(carte[blocCollide] === 1){
+        
+      }
+      else{
+      okarin.y--;
+      }
+
 }
 
   this.show = function(){
@@ -118,19 +177,44 @@ var controller_up = new up_arrow();
 
 var right_arrow = function(){
   this.move = function(){
-    var collide = okarin.x + 1;
-    blocCollide = okarin.y * 10 + collide;
-    if(carte[blocCollide] === 0){
-      okarin.x = okarin.x;
-    }
-    else if(carte[blocCollide] === 1){
-      okarin.x = okarin.x;
-    }
-    else{
-    okarin.x++;
-    }
-  }
+      okarin.direction = 0;
+      var collide = okarin.x + 1;
+      blocCollide = okarin.y * 10 + collide;
+      
+      for(var i = 0; i < boite.length; i++){
+          var boxecollide = boite[i].y *10 + boite[i].x;
+          if(blocCollide === boxecollide){
+            for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide + 1 === ndboxecollide){
+                okarin.x--;
+                boite[i].x--;
+                break;
+              }
+            }
+            if(carte[boxecollide + 1] === 1 || carte[boxecollide + 1] === 0){
+              okarin.x--;
+              break;
+            }
+          boite[i].x++;
+          }
+      }
 
+      if(carte[blocCollide] === 0){
+        
+      }
+      else if(carte[blocCollide] === 1){
+       
+      }
+      
+
+      else{
+      okarin.x++;
+      }
+      
+  
+  }
+      
     this.show = function(){
     fill(0, 0, 255);
     rect(400 - squareScale, squareScale, squareScale, 400 - (squareScale * 2));
@@ -142,17 +226,39 @@ var controller_right = new right_arrow();
 
 var left_arrow = function(){
   this.move = function(){
+    okarin.direction = 1;
     var collide = okarin.x - 1;
     blocCollide = okarin.y * 10 + collide;
-    if(carte[blocCollide] === 0){
-      okarin.x = okarin.x;
-    }
-    else if(carte[blocCollide] === 1){
-      okarin.x = okarin.x;
-    }
-    else{
-    okarin.x--;
-  }
+
+    for(var i = 0; i < boite.length; i++){
+        var boxecollide = boite[i].y *10 + boite[i].x;
+        if(blocCollide === boxecollide){
+            
+        for(var j = 0; j < boite.length; j++){
+            var ndboxecollide = boite[j].y *10 + boite[j].x;
+            if(boxecollide - 1 === ndboxecollide){
+                okarin.x++;
+                boite[i].x++;
+                break;
+              }
+            }
+            
+            if(carte[boxecollide - 1] === 1 || carte[boxecollide - 1] === 0){
+              okarin.x++;
+              break;
+            }
+          boite[i].x--;
+          }
+      }
+    
+      if(carte[blocCollide] === 0){
+      }
+      else if(carte[blocCollide] === 1){
+      }
+      else{
+      okarin.x--;
+      }
+  
   }
 
 
@@ -167,30 +273,49 @@ var controller_left = new left_arrow();
 var boxes = function(x, y){
   this.x = x;
   this.y = y;
+  this.victory = 0;
 
   this.show = function(){
-    fill(187, 187, 187);
-    rect(x * squareScale, y * squareScale, squareScale, squareScale);
-    fill(0, 0, 0);
-    ellipse((x * squareScale) + (squareScale / 2),(y * squareScale) + (squareScale / 2), squareScale / 2, squareScale / 2);
+    banana
+    image(banana, this.x * squareScale + 10, this.y * squareScale + 10, squareScale / 2, squareScale / 2);
   }
-
 
 }
 var boite = [
               new boxes(4, 2),
               new boxes(5, 3),
               new boxes(5, 4),
+              new boxes(6, 7),
+              new boxes(5, 7),
+              new boxes(4, 7),
+              new boxes(2, 7),
             ];
 
 
 var player = function(){
   this.x = 3;
   this.y = 2;
+  this.direction = 0;
   
   this.show = function(){
-    fill(255, 0, 0);
-      rect(this.x * squareScale, this.y * squareScale, squareScale, squareScale );
+    switch(this.direction){
+      case 0:
+        image(okarin_right, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+
+      case 1:
+        image(okarin_left, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+
+      case 2:
+        image(okarin_back, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+
+      case 3:
+        image(okarin_front, this.x * squareScale + 1, this.y * squareScale + 1, squareScale -1, squareScale - 1);
+        break;
+    }
+    
   }
   
 }
@@ -198,61 +323,189 @@ var player = function(){
 var okarin = new player();
 
 function keyPressed() {
-  if (keyCode === RIGHT_ARROW) {
-    
-    var collide = okarin.x + 1;
-    blocCollide = okarin.y * 10 + collide;
-    if(carte[blocCollide] === 0){
-      okarin.x = okarin.x;
-    }
-    else if(carte[blocCollide] === 1){
-      okarin.x = okarin.x;
-    }
-    else{
-    okarin.x++;
-    }
-  } 
-  else if(keyCode  === LEFT_ARROW){
-    var collide = okarin.x - 1;
-    blocCollide = okarin.y * 10 + collide;
-    if(carte[blocCollide] === 0){
-      okarin.x = okarin.x;
-    }
-    else if(carte[blocCollide] === 1){
-      okarin.x = okarin.x;
-    }
-    else{
-    okarin.x--;
-  }
-  }
-  else if(keyCode  === UP_ARROW){
+  switch(keyCode){
+    case RIGHT_ARROW:
+      okarin.direction = 0;
+      var collide = okarin.x + 1;
+      blocCollide = okarin.y * 10 + collide;
+      
+      for(var i = 0; i < boite.length; i++){
+          var boxecollide = boite[i].y *10 + boite[i].x;
+          if(blocCollide === boxecollide){
+            for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide + 1 === ndboxecollide){
+                okarin.x--;
+                boite[i].x--;
+                break;
+              }
+            }
+            if(carte[boxecollide + 1] === 1 || carte[boxecollide + 1] === 0){
+              okarin.x--;
+              break;
+            }
+          boite[i].x++;
+          }
+      }
 
-    blocCollide = (okarin.y - 1) * 10 + okarin.x;
-    
-    if(carte[blocCollide] === 0){
-      okarin.y = okarin.y;
-    }
-    else if(carte[blocCollide] === 1){
-      okarin.y = okarin.y;
-    }
+      if(carte[blocCollide] === 0){
+        break;
+      }
+      else if(carte[blocCollide] === 1){
+        break;
+      }
+      
+
+      else{
+      okarin.x++;
+      }
+      break;
+  
+
+    case LEFT_ARROW:
+      okarin.direction = 1;
+      var collide = okarin.x - 1;
+      blocCollide = okarin.y * 10 + collide;
+
+      for(var i = 0; i < boite.length; i++){
+          var boxecollide = boite[i].y *10 + boite[i].x;
+          if(blocCollide === boxecollide){
+            
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide - 1 === ndboxecollide){
+                okarin.x++;
+                boite[i].x++;
+                break;
+              }
+            }
+            
+            if(carte[boxecollide - 1] === 1 || carte[boxecollide - 1] === 0){
+              okarin.x++;
+              break;
+            }
+          boite[i].x--;
+          }
+      }
+
+      if(carte[blocCollide] === 0){
+        break;
+      }
+      else if(carte[blocCollide] === 1){
+        break;
+      }
+      else{
+      okarin.x--;
+      }
+      break;
+
+
+    case UP_ARROW:
+      okarin.direction = 2;
+      blocCollide = (okarin.y - 1) * 10 + okarin.x;
+
+      for(var i = 0; i < boite.length; i++){
+          var boxecollide = boite[i].y * 10 + boite[i].x;
+          if(blocCollide === boxecollide){
+
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide - 10 === ndboxecollide){
+                okarin.y++;
+                boite[i].y++;
+                break;
+              }
+            }
+
+            if(carte[boxecollide - 10] === 1 || carte[boxecollide - 10] === 0){
+              okarin.y++;
+              break;
+            }
+          boite[i].y--;
+          }
+      }
+      
+      if(carte[blocCollide] === 0){
+        break;
+      }
+      else if(carte[blocCollide] === 1){
+        break;
+      }
+      else{
+      okarin.y--;
+      }
+      break;
+
+
+    case DOWN_ARROW:
+      okarin.direction = 3;
+      blocCollide = okarin.y * 10 + okarin.x + 10;
+
+      for(var i = 0; i < boite.length; i++){
+          var boxecollide = boite[i].y * 10 + boite[i].x;
+          if(blocCollide === boxecollide){
+
+              for(var j = 0; j < boite.length; j++){
+              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              if(boxecollide + 10 === ndboxecollide){
+                okarin.y--;
+                boite[i].y--;
+                break;
+              }
+            }
+
+            if(carte[boxecollide + 10] === 1 || carte[boxecollide + 10] === 0){
+              okarin.y--;
+              break;
+            }
+          boite[i].y++;
+          }
+      }
+
+      if(carte[blocCollide] === 0){
+        break;
+      }
+      else if(carte[blocCollide] === 1){
+        break;
+      }
+      else{
+      okarin.y++;
+      }
+      break;
+
+  }
+  
+}
+
+var victory = function(){
+  for(i = 0; i < boite.length; i++){
+    var boxecollide = boite[i].y * 10 + boite[i].x;
+    if(carte[boxecollide] === 4){
+      boite[i].victory = 1;
+    } 
     else{
-    okarin.y--;
+      boite[i].victory = 0;
+    }
   }
 }
 
-  else if(keyCode  === DOWN_ARROW){
-    blocCollide = okarin.y * 10 + okarin.x + 10;
-    if(carte[blocCollide] === 0){
-      okarin.y = okarin.y;
+var winmessage = true;
+var checkIfWon = function(){
+  var won = 0;
+  for(i = 0; i < boite.length; i++){
+    if(boite[i].victory === 1){
+      won ++;
     }
-    else if(carte[blocCollide] === 1){
-      okarin.x = okarin.x;
+    if(won === 7){
+      if(winmessage){
+      mySound.play();
+      window.alert("Tu as gagné !");
+      winmessage = false;
     }
-    else{
-    okarin.y++;
   }
 }
 }
+
 
 
 function setup() {
@@ -261,20 +514,21 @@ function setup() {
   var y = (windowHeight - height) / 2;
   cnv.position(x, y);
   background(55, 55, 55);
+  mySound.setVolume(0.1);
   cnv.touchStarted(touchMove);
-
 }
 
 function draw() {
+  checkIfWon();
   gameboard.show();
   okarin.show();
+  victory();
   controller_left.show();
   controller_right.show();
   controller_up.show();
   controller_down.show();
 
-  //for(i = 0; i < boite.length; i++){
-    //boite[i].show();
-    //boite[i].collide();
-  //}
+  for(i = 0; i < boite.length; i++){
+    boite[i].show();
+  }
 }
