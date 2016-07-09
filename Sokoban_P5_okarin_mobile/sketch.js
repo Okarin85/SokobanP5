@@ -91,31 +91,32 @@ var down_arrow = function(){
           if(blocCollide === boxecollide){
 
               for(var j = 0; j < boite.length; j++){
-              var ndboxecollide = boite[j].y *10 + boite[j].x;
+              var ndboxecollide = boite[j].y * 10 + boite[j].x;
               if(boxecollide + 10 === ndboxecollide){
                 okarin.y--;
                 boite[i].y--;
-                
+                break;
               }
             }
 
             if(carte[boxecollide + 10] === 1 || carte[boxecollide + 10] === 0){
               okarin.y--;
-              
+              break;
             }
           boite[i].y++;
           }
       }
 
       if(carte[blocCollide] === 0){
-        
+              
       }
       else if(carte[blocCollide] === 1){
-        
+                
       }
       else{
       okarin.y++;
       }
+      
       
   }
     this.show = function(){
@@ -139,13 +140,13 @@ var up_arrow = function(){
               if(boxecollide - 10 === ndboxecollide){
                 okarin.y++;
                 boite[i].y++;
-                
+                break;
               }
             }
 
             if(carte[boxecollide - 10] === 1 || carte[boxecollide - 10] === 0){
               okarin.y++;
-              
+              break;
             }
           boite[i].y--;
           }
@@ -188,12 +189,12 @@ var right_arrow = function(){
               if(boxecollide + 1 === ndboxecollide){
                 okarin.x--;
                 boite[i].x--;
-                
+                break;
               }
             }
             if(carte[boxecollide + 1] === 1 || carte[boxecollide + 1] === 0){
               okarin.x--;
-              
+              break;
             }
           boite[i].x++;
           }
@@ -238,11 +239,13 @@ var left_arrow = function(){
             if(boxecollide - 1 === ndboxecollide){
                 okarin.x++;
                 boite[i].x++;
+                break;
               }
             }
             
             if(carte[boxecollide - 1] === 1 || carte[boxecollide - 1] === 0){
               okarin.x++;
+              break;
             }
           boite[i].x--;
           }
