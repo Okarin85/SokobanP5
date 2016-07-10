@@ -515,7 +515,7 @@ function setup() {
   cnv.position(x, y);
   background(55, 55, 55);
   mySound.setVolume(0.1);
-  cnv.touchStarted(touchMove);
+  cnv.touchEnded(touchMove);
 }
 
 function draw() {
