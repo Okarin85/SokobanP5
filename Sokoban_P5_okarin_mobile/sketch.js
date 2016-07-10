@@ -66,6 +66,7 @@ var grid = function(){
 var gameboard = new grid();
 
 var touchMove = function(){
+  
   if(touchX < squareScale && touchY > squareScale && touchY < 400 - squareScale){
       controller_left.move();
   }
@@ -78,6 +79,7 @@ var touchMove = function(){
   else if(touchX > squareScale && touchX < 400 - squareScale && touchY < 400){
     controller_down.move();
   }
+  event.preventDefault();
 }
 
 var down_arrow = function(){
